@@ -1,13 +1,124 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+		'Helvetica Neue', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+nav {
+	/* display: flex; */
+	padding: 29px;
+	/* justify-content: space-between; */
+	background: gainsboro;
+	border-bottom: 1px solid black;
+	margin-bottom: 18px;
+	text-align: center;
+}
+
+nav a {
+	height: 58px;
+	background: black;
+	color: white;
+	border: none;
+	border-radius: 36px;
+	width: 61px;
+	text-decoration: auto;
+}
+
+nav > a:hover {
+	box-shadow: 2px 4px 12px black;
+}
+
+nav > a > h1 {
+	text-align: center;
+	/* text-decoration: unset; */
+	/* margin-right: -3%; */
+	font-family: ui-sans-serif;
+	font-size: -webkit-xxx-large;
+	font-weight: bolder;
+}
+
+.searchBar > input {
+	margin: 7px;
+	border-radius: 20px;
+	width: 19em;
+	height: 40px;
+	padding: 11px;
+}
+
+.app {
+	width: 95%;
+	/* flex-direction: column; */
+	margin: 0px auto;
+	display: flex;
+}
+
+table {
+	height: 35em;
+	margin: 20px;
+}
+
+button:hover {
+	box-shadow: 2px 4px 12px black;
+}
+
+td > button {
+	border: none;
+	border-radius: 3px;
+	color: white;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin: 28px auto;
+}
+form > input {
+	padding: 10px;
+	border-radius: 10px;
+	height: 40px;
+}
+
+form > a > button {
+	width: 143px;
+	height: 41px;
+	margin: 0px auto;
+	border: none;
+	border-radius: 10px;
+	background: black;
+	color: white;
+}
+
+.contactform {
+	border: 1px solid black;
+	width: 100%;
+	padding: 10px;
+	/* margin: 0px auto; */
+	border-radius: 12px;
+	background: antiquewhite;
+	height: 22em;
+	margin-top: 33px;
+	padding-top: 0px;
+}
+
+.contactform button {
+	margin: 0px auto;
+	background: black;
+	color: white;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	flex: 2;
+	/* width: 30%;
+	max-width: 25%; */
 }
