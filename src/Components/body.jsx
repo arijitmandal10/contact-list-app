@@ -14,8 +14,9 @@ const Body = () => {
 		phone: '',
 	});
 	const [lastId, setLastId] = useState(10);
-
 	const [refreshData, setRefreshData] = useState(false);
+	const [editMode, setEditMode] = useState(false);
+	const [editUser, setEditUser] = useState(null);
 
 	useEffect(() => {
 		getContactList();
@@ -50,46 +51,100 @@ const Body = () => {
 
 	const handleCreateUser = async (e) => {
 		e.preventDefault();
+
 		try {
-			const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
-				method: 'POST',
-				body: JSON.stringify({
-					name: newUser.name,
-					email: newUser.email,
-					address: {
-						city: newUser.city,
+			if (editMode) {
+				// Perform update operation
+				const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${editUser.id}`, {
+					method: 'PUT',
+					body: JSON.stringify({
+						id: editUser.id,
+						name: newUser.name,
+						email: newUser.email,
+						address: {
+							city: newUser.city,
+						},
+						phone: newUser.phone,
+					}),
+					headers: {
+						'Content-type': 'application/json; charset=UTF-8',
 					},
-					phone: newUser.phone,
-				}),
-				headers: {
-					'Content-type': 'application/json; charset=UTF-8',
-				},
-			});
+				});
 
-			if (!response.ok) {
-				throw new Error('Failed to create user');
+				if (!response.ok) {
+					throw new Error('Failed to update user');
+				}
+
+				// Update the user in the contact list
+				const updatedUser = await response.json();
+				setContact((prevContact) => prevContact.map((user) => (user.id === updatedUser.id ? updatedUser : user)));
+
+				// Reset the form and edit mode
+				setNewUser({
+					name: '',
+					email: '',
+					city: '',
+					phone: '',
+				});
+				setEditMode(false);
+				setEditUser(null);
+
+				toast.success('User updated successfully!');
+			} else {
+				// Perform create operation
+				const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+					method: 'POST',
+					body: JSON.stringify({
+						name: newUser.name,
+						email: newUser.email,
+						address: {
+							city: newUser.city,
+						},
+						phone: newUser.phone,
+					}),
+					headers: {
+						'Content-type': 'application/json; charset=UTF-8',
+					},
+				});
+
+				if (!response.ok) {
+					throw new Error('Failed to create user');
+				}
+
+				const newUserJson = await response.json();
+
+				setNewUser({
+					name: '',
+					email: '',
+					city: '',
+					phone: '',
+				});
+
+				const newId = lastId + 1;
+				setLastId(newId);
+				newUserJson.id = newId;
+
+				setContact((prevContact) => [...prevContact, newUserJson]);
+
+				toast.success('User created successfully!');
 			}
-
-			const newUserJson = await response.json();
-
-			setNewUser({
-				name: '',
-				email: '',
-				city: '',
-				phone: '',
-			});
-
-			const newId = lastId + 1;
-			setLastId(newId);
-			newUserJson.id = newId;
-
-			setContact((prevContact) => [...prevContact, newUserJson]);
-
-			toast.success('User created successfully!');
 		} catch (error) {
-			console.log('Error creating user:', error);
-			toast.error('Failed to create user');
+			console.log('Error creating/updating user:', error);
+			toast.error('Failed to create/update user');
 		}
+	};
+
+	const handleEdit = (user) => {
+		setEditMode(true);
+		setEditUser(user);
+
+		// Populate the form fields with the user's data
+		setNewUser({
+			name: user.name,
+			email: user.email,
+			city: user.address.city,
+			phone: user.phone,
+		});
 	};
 
 	return (
@@ -113,7 +168,7 @@ const Body = () => {
 						})
 						.map((contact) => {
 							return (
-								<tr>
+								<tr key={contact.id}>
 									<td>{contact?.id}.</td>
 									<td>{contact?.name}</td>
 									<td>{contact?.email}</td>
@@ -124,7 +179,9 @@ const Body = () => {
 											delete
 										</button>
 										&nbsp; &nbsp;
-										<button style={{ backgroundColor: 'lime' }}>edit</button>
+										<button style={{ backgroundColor: 'lime' }} onClick={() => handleEdit(contact)}>
+											edit
+										</button>
 									</td>
 								</tr>
 							);
