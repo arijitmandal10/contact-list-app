@@ -14,9 +14,9 @@ const Body = () => {
 		phone: '',
 	});
 	const [lastId, setLastId] = useState(10);
-	const [refreshData, setRefreshData] = useState(false);
 	const [editMode, setEditMode] = useState(false);
 	const [editUser, setEditUser] = useState(null);
+	const [refreshData, setRefreshData] = useState(false);
 
 	useEffect(() => {
 		getContactList();
@@ -190,11 +190,10 @@ const Body = () => {
 			</Table>
 
 			<div className='container'>
-				{' '}
 				<div className='searchBar'>
 					<input type='text' placeholder='search name' value={searchtext} onChange={(e) => setSearchtext(e.target.value)} />
 				</div>
-				{/* Input form for creating a new user */}
+				{/* Input form for creating/updating a user */}
 				<div className='contactform'>
 					<form onSubmit={handleCreateUser}>
 						<input type='text' name='name' placeholder='Name' value={newUser.name} onChange={handleInputChange} />
@@ -205,7 +204,7 @@ const Body = () => {
 						<br />
 						<input type='text' name='phone' placeholder='Phone' value={newUser.phone} onChange={handleInputChange} />
 						<br />
-						<button type='submit'>Create User</button>
+						<button type='submit'>{editMode ? 'Update' : 'Create User'}</button>
 					</form>
 				</div>
 			</div>
